@@ -7,13 +7,19 @@ import { useState } from "react";
 function Expenses({ data }) {
   const [selectedYear, setSelectedYear] = useState("2020");
 
-  const exp = data.map((e) => (
+  const filteredExpenses = data.filter(
+    (e) => e.date.getFullYear() === +selectedYear
+  );
+
+  const exp = filteredExpenses.map((e) => (
     <ExpenseItem title={e.title} amount={e.amount} date={e.date} key={e.id} />
   ));
 
   const selectedYearHandler = function (year) {
     setSelectedYear(year);
   };
+
+  const expenseContent = exp.length === 0 ? <p>No expenses found.</p> : exp;
 
   return (
     <div>
@@ -22,7 +28,7 @@ function Expenses({ data }) {
           selectedYearHandler={selectedYearHandler}
           selectedYear={selectedYear}
         />
-        {exp}
+        {expenseContent}
       </Card>
     </div>
   );
